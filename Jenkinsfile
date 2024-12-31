@@ -1,43 +1,49 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker_cred')
+        DOCKERHUB_REPO = 'mehuljain4751/flask_jnk_test'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/mehul-kocheta/test.git'
+                git 'https://github.com/mehul-kocheta/flask_app.git'
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                // Replace with your build command
-                echo 'Build'
+                script {
+                    dockerImage = docker.build("${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}")
+                }
             }
         }
 
-        stage('Test') {
+        stage('Push Docker Image') {
             steps {
-                // Replace with your test command
-                echo 'make test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Replace with your deploy command
-                echo 'make deploy'
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker_cred') {
+                        dockerImage.push()
+                    }
+                }
             }
         }
     }
 
     post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
         success {
             // Notify success
-            echo 'Build succeeded!'
+            echo 'Build and push succeeded!'
         }
         failure {
             // Notify failure
-            echo 'Build failed!'
+            echo 'Build and push failed!'
         }
     }
 }
