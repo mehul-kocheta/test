@@ -3,13 +3,14 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker_cred')
-        DOCKERHUB_REPO = 'mehuljain4751/flask_jnk_test'
+        DOCKERHUB_REPO = 'mehuljain4751/flask_server'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git 'https://github.com/mehul-kocheta/flask_app.git'
+                echo "Build number: ${env.BUILD_NUMBER}"
             }
         }
 
