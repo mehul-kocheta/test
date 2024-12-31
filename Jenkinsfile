@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'amz-ec2'
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker_cred')
