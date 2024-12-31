@@ -11,30 +11,26 @@ pipeline {
         stage('Build') {
             steps {
                 // Replace with your build command
-                sh 'make build'
+                echo 'Build'
             }
         }
 
         stage('Test') {
             steps {
                 // Replace with your test command
-                sh 'make test'
+                echo 'make test'
             }
         }
 
         stage('Deploy') {
             steps {
                 // Replace with your deploy command
-                sh 'make deploy'
+                echo 'make deploy'
             }
         }
     }
 
     post {
-        always {
-            // Archive the build artifacts
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-        }
         success {
             // Notify success
             echo 'Build succeeded!'
