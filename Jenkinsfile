@@ -28,26 +28,11 @@ pipeline {
             }
             steps {
                 script {
-                    withCredentials([file(credentialsId: env.k8_cred, variable: 'KUBECONFIG')]) { 
+                    withCredentials([file(credentialsId: 'k8_cred', variable: 'KUBECONFIG')]) { 
                         sh 'kubectl run busybox --image=busybox --command -- sh -c "echo Hello Kubernetes! && sleep 3600"' 
                     }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            // Clean up workspace
-            cleanWs()
-        }
-        success {
-            // Notify success
-            echo 'Build, push, and deploy succeeded!'
-        }
-        failure {
-            // Notify failure
-            echo 'Build, push, or deploy failed!'
         }
     }
 }
