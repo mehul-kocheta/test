@@ -23,10 +23,10 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+            agent {
+                label 'master'
+            }
             steps {
-                agent {
-                    label 'master'
-                }
                 script {
                     withCredentials([file(credentialsId: env.k8_cred, variable: 'KUBECONFIG')]) { 
                         sh 'kubectl run busybox --image=busybox --command -- sh -c "echo Hello Kubernetes! && sleep 3600"' 
