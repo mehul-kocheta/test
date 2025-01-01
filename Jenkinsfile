@@ -29,7 +29,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'k8_cred', variable: 'KUBECONFIG')]) { 
-                        sh 'kubectl run busybox --image=busybox --command -- sh -c "echo Hello Kubernetes! && sleep 3600"' 
+                        git 'https://github.com/mehul-kocheta/flask_app.git'
+                        sh 'kubectl apply -f mysql.yaml"'
+                        sh 'kubectl apply -f flask.yaml"' 
                     }
                 }
             }
