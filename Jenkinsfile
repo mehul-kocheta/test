@@ -47,7 +47,7 @@ pipeline {
                 label ''
             }
                 script {
-                    withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) { 
+                    withCredentials([file(credentialsId: env.k8_cred, variable: 'KUBECONFIG')]) { 
                         sh 'kubectl run busybox --image=busybox --command -- sh -c "echo Hello Kubernetes! && sleep 3600"' 
                     }
                 }
