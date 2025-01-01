@@ -24,7 +24,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             agent {
-                label 'master'
+                label 'k8_node'
             }
             steps {
                 script {
