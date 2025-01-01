@@ -7,33 +7,14 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            agent {
-                label 'amz-ec2'
-            }
-            steps {
-                git 'https://github.com/mehul-kocheta/flask_app.git'
-                echo "Build number: ${env.BUILD_NUMBER}"
-            }
-        }
-
-        stage('Build Docker Image') {
+        stage('Build Docker Image and push') {
             agent {
                 label 'amz-ec2'
             }
             steps {
                 script {
+                    git 'https://github.com/mehul-kocheta/flask_app.git'
                     dockerImage = docker.build("${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}")
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            agent {
-                label 'amz-ec2'
-            }
-            steps {
-                script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker_cred') {
                         dockerImage.push()
                     }
